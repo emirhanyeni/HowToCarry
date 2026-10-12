@@ -42,6 +42,10 @@ public class Pickup : MonoBehaviour
     private Collider[] myColliders;
     private Collider[] playerColliders;
 
+    // --- ANİMASYON (eklenen) ---
+    private Animator playerAnimator;
+    private static readonly int CarryHash = Animator.StringToHash("Carry");
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -55,16 +59,21 @@ public class Pickup : MonoBehaviour
         holdingMechanic = HoldingMechanic.Instance;
         mainCam = Camera.main;
 
-        if (holdingMechanic  == null)
+        if (holdingMechanic == null)
         {
             Debug.LogError("Sahnede HoldingMechanic bulunamadı! Pickup çalışmayacak.", this);
             return;
         }
 
         if (playerRoot == null)
-            playerRoot =    holdingMechanic.transform.root;
+            playerRoot = holdingMechanic.transform.root;
 
         playerColliders = playerRoot.GetComponentsInChildren<Collider>();
+
+        // --- ANİMASYON (eklenen) ---
+        playerAnimator = playerRoot.GetComponentInChildren<Animator>();
+        if (playerAnimator == null)
+            Debug.LogWarning("Karakterde Animator bulunamadı, Carry animasyonu çalışmayacak.", this);
     }
 
     private void Update()
@@ -165,6 +174,9 @@ public class Pickup : MonoBehaviour
 
         rb.useGravity = false;
 
+        // --- ANİMASYON (eklenen) ---
+        if (playerAnimator != null) playerAnimator.SetBool(CarryHash, true);
+
         // Önceki bırakmadan kalan bekleyen "çarpışmayı aç" işlemi varsa iptal et
         if (restoreRoutine != null)
         {
@@ -182,6 +194,9 @@ public class Pickup : MonoBehaviour
         if (currentHeld == this) currentHeld = null;
 
         rb.useGravity = true;
+
+        // --- ANİMASYON (eklenen) ---
+        if (playerAnimator != null) playerAnimator.SetBool(CarryHash, false);
 
         // Çarpışmayı hemen açma: nesne hâlâ karakterin içindeyse fizik motoru
         // onları ayırmaya çalışır ve titreme/sekme olur.
@@ -232,6 +247,10 @@ public class Pickup : MonoBehaviour
     {
         if (ignorePlayerCollision)
             SetPlayerCollision(false);
+
+        // --- ANİMASYON (eklenen) ---
+        if (isHolding && playerAnimator != null)
+            playerAnimator.SetBool(CarryHash, false);
 
         restoreRoutine = null;
         if (currentHeld == this) currentHeld = null;
