@@ -3,21 +3,21 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Basınç plakası. Üzerinde "Block" tag'ine sahip bir obje durunca kapıyı açar (yok eder),
-/// blok kalkınca kapıyı geri getirir.
+/// Basınç plakası. Sadece Inspector'da atanan objenin (veya onun child'larının) üzerinde
+/// durması kapıyı açar (yok eder), obje kalkınca kapıyı geri getirir.
 /// Plakadaki Collider "Is Trigger" işaretli olmalı.
 /// </summary>
 [RequireComponent(typeof(Collider))]
 public class PressurePlate : MonoBehaviour
 {
     [Header("Ayarlar")]
-    [Tooltip("Plakayı basabilen objelerin tag'i")]
-    [SerializeField] private string blockTag = "Block";
+    [Tooltip("Plakayı sadece bu obje açabilir (sahnedeki objeyi buraya sürükle)")]
+    [SerializeField] private GameObject activator;
 
     [Tooltip("Açılacak kapı")]
     [SerializeField] private Door door;
 
-    [Tooltip("Blok kalkınca kapı geri gelsin mi? Kapalıysa kapı kalıcı olarak yok olur.")]
+    [Tooltip("Obje kalkınca kapı geri gelsin mi? Kapalıysa kapı kalıcı olarak yok olur.")]
     [SerializeField] private bool closeWhenReleased = true;
 
     [Header("Görsel (opsiyonel)")]
@@ -30,7 +30,7 @@ public class PressurePlate : MonoBehaviour
     public UnityEvent onPressed;
     public UnityEvent onReleased;
 
-    // Plakanın üzerindeki blokları sayıyoruz (birden fazla blok olabilir)
+    // Plakanın üzerindeki collider'lar (activator birden fazla collider'a sahip olabilir)
     private readonly HashSet<Collider> blocksOnPlate = new HashSet<Collider>();
     private bool isPressed;
     private Vector3 visualStartPos;
@@ -41,9 +41,16 @@ public class PressurePlate : MonoBehaviour
         if (plateVisual != null) visualStartPos = plateVisual.localPosition;
     }
 
+    // Çarpan collider, atanan objeye ya da onun child'larına ait mi?
+    private bool IsActivator(Collider other)
+    {
+        if (activator == null) return false;
+        return other.transform.IsChildOf(activator.transform);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag(blockTag)) return;
+        if (!IsActivator(other)) return;
         blocksOnPlate.Add(other);
         UpdateState();
     }
@@ -56,7 +63,7 @@ public class PressurePlate : MonoBehaviour
 
     private void Update()
     {
-        // Silinen/yok edilen blokları temizle (OnTriggerExit her zaman çağrılmayabilir)
+        // Silinen/yok edilen collider'ları temizle (OnTriggerExit her zaman çağrılmayabilir)
         if (blocksOnPlate.Count > 0 && blocksOnPlate.RemoveWhere(c => c == null || !c.gameObject.activeInHierarchy) > 0)
             UpdateState();
 
