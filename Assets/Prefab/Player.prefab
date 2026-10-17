@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 223460562988644320}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 0.321, z: 0.21}
+  m_LocalPosition: {x: -0.008, y: 0.842, z: 0.083}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -222,6 +222,8 @@ MonoBehaviour:
   crouchSpeed: 3
   animator: {fileID: 7739773204664662971}
   groundedStickForce: 2
+  interactDistance: 3.5
+  companionObject: {fileID: 0}
 --- !u!1 &7190234596815417874
 GameObject:
   m_ObjectHideFlags: 0
