@@ -7,6 +7,7 @@ using UnityEngine.Events;
 /// durması kapıyı açar (yok eder), obje kalkınca kapıyı geri getirir.
 /// Plakadaki Collider "Is Trigger" işaretli olmalı.
 /// </summary>
+namespace HowToCarry.Mechanics { 
 [RequireComponent(typeof(Collider))]
 public class PressurePlate : MonoBehaviour
 {
@@ -92,4 +93,5 @@ public class PressurePlate : MonoBehaviour
             onReleased?.Invoke();
         }
     }
+}
 }

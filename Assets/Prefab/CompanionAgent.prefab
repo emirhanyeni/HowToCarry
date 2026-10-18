@@ -10,7 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4580649469232543483}
   - component: {fileID: 4140731919167759101}
-  - component: {fileID: 6655484345566514086}
+  - component: {fileID: 5630423777597949034}
+  - component: {fileID: 964077351133120780}
+  - component: {fileID: 82881604813384610}
+  - component: {fileID: 6070629473894122930}
+  - component: {fileID: 8704936774195072160}
   m_Layer: 0
   m_Name: CompanionAgent
   m_TagString: CompanionAgent
@@ -31,6 +35,7 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 4188649564664864190}
   - {fileID: 8797833878535559462}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59,29 +64,220 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &6655484345566514086
-CapsuleCollider:
+--- !u!114 &5630423777597949034
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598694040551236140}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Policies.BehaviorParameters
+  m_BrainParameters:
+    VectorObservationSize: 10
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 2
+      BranchSizes: 02000000
+    VectorActionSize: 
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: CompanionBehavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_DeterministicInference: 0
+  m_ObservableAttributeHandling: 0
+--- !u!114 &964077351133120780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50a7a7558093dd4ab53f4626f014f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HowToCarry.AI.CompanionAgent
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 2500
+  rooms:
+  - roomName: S0_RuinedLobby_Easy
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    waypointsToPlate: []
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    cubeRb: {fileID: 0}
+    initialAgentPos: {x: 0, y: 0, z: 0}
+    initialAgentRot: {x: 0, y: 0, z: 0, w: 0}
+    initialCubePos: {x: 0, y: 0, z: 0}
+    initialCubeRot: {x: 0, y: 0, z: 0, w: 0}
+  - roomName: S1_PitParkour
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    waypointsToPlate: []
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    cubeRb: {fileID: 0}
+    initialAgentPos: {x: 0, y: 0, z: 0}
+    initialAgentRot: {x: 0, y: 0, z: 0, w: 0}
+    initialCubePos: {x: 0, y: 0, z: 0}
+    initialCubeRot: {x: 0, y: 0, z: 0, w: 0}
+  - roomName: S2_TwoPaths_Hard
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    waypointsToPlate: []
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    cubeRb: {fileID: 0}
+    initialAgentPos: {x: 0, y: 0, z: 0}
+    initialAgentRot: {x: 0, y: 0, z: 0, w: 0}
+    initialCubePos: {x: 0, y: 0, z: 0}
+    initialCubeRot: {x: 0, y: 0, z: 0, w: 0}
+  - roomName: S3_Lab_GlassCell
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    waypointsToPlate: []
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    cubeRb: {fileID: 0}
+    initialAgentPos: {x: 0, y: 0, z: 0}
+    initialAgentRot: {x: 0, y: 0, z: 0, w: 0}
+    initialCubePos: {x: 0, y: 0, z: 0}
+    initialCubeRot: {x: 0, y: 0, z: 0, w: 0}
+  startingRoomIndex: 0
+  playerTransform: {fileID: 0}
+  followStopDistance: 2.5
+  agentHoldPoint: {fileID: 4188649564664864190}
+  moveSpeed: 5
+  turnSpeed: 180
+  jumpPower: 6.5
+  gravity: 12
+  groundedStickForce: 2
+  pickupDistance: 2.2
+  dropDistance: 1.6
+  fallDepthLimit: -3.5
+  trainingMode: 1
+  randomizeRoomInTraining: 1
+  animator: {fileID: 7739773204664662971}
+--- !u!114 &82881604813384610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.DecisionRequester
+  DecisionPeriod: 5
+  DecisionStep: 0
+  TakeActionsBetweenDecisions: 1
+--- !u!114 &6070629473894122930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Sensors.RayPerceptionSensorComponent3D
+  m_SensorName: UpperRaySensor
+  m_DetectableTags:
+  - PressurePlate
+  - Wall
+  - CompanionCube
+  m_RaysPerDirection: 4
+  m_MaxRayDegrees: 75
+  m_SphereCastRadius: 0.5
+  m_RayLength: 12
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  m_AlternatingRayOrder: 1
+  m_UseBatchedRaycasts: 0
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0.6
+  m_EndVerticalOffset: 0.6
+--- !u!114 &8704936774195072160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Sensors.RayPerceptionSensorComponent3D
+  m_SensorName: GroundRaySensor
+  m_DetectableTags:
+  - Wall
+  - PressurePlate
+  m_RaysPerDirection: 3
+  m_MaxRayDegrees: 60
+  m_SphereCastRadius: 0.5
+  m_RayLength: 8
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  m_AlternatingRayOrder: 1
+  m_UseBatchedRaycasts: 0
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0.5
+  m_EndVerticalOffset: -0.4
+--- !u!1 &3970441210799702074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4188649564664864190}
+  m_Layer: 0
+  m_Name: HoldPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4188649564664864190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3970441210799702074}
   serializedVersion: 2
-  m_Radius: 2
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4580649469232543483}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9048459741990174413
 PrefabInstance:
   m_ObjectHideFlags: 0

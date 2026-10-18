@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using HowToCarry.Mechanics;
 /// <summary>
 /// Basınç plakası ve kapı sesleri.
 /// Door'un durumunu kendisi izler, UnityEvent bağlamana GEREK YOK.

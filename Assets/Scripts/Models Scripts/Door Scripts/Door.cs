@@ -5,6 +5,7 @@ using UnityEngine;
 /// Kapı. Open() çağrılınca küçülerek yok olur, Close() çağrılınca geri gelir.
 /// Kapı objesinin üzerinde bir Collider olmalı (oyuncuyu engellemesi için).
 /// </summary>
+namespace HowToCarry.Mechanics {
 public class Door : MonoBehaviour
 {
     [Header("Ayarlar")]
@@ -68,4 +69,5 @@ public class Door : MonoBehaviour
     {
         foreach (var c in colliders) c.enabled = state;
     }
+}
 }

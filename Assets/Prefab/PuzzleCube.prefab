@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 380b583af479e044981de3656b32ed73, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.45247
+      value: 711.9541
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 380b583af479e044981de3656b32ed73, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.271
+      value: 476.464
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 380b583af479e044981de3656b32ed73, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.58362
+      value: -1356.6495
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 380b583af479e044981de3656b32ed73, type: 3}
       propertyPath: m_LocalRotation.w
@@ -38,7 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 380b583af479e044981de3656b32ed73, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 380b583af479e044981de3656b32ed73, type: 3}
       propertyPath: m_LocalRotation.y
@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PuzzleCube
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 380b583af479e044981de3656b32ed73, type: 3}
+      propertyPath: m_TagString
+      value: CompanionCube
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -81,6 +85,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 380b583af479e044981de3656b32ed73, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5564215238999351320}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 380b583af479e044981de3656b32ed73, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4421732510333991660}
   m_SourcePrefab: {fileID: 100100000, guid: 380b583af479e044981de3656b32ed73, type: 3}
 --- !u!1 &5521283492607971245 stripped
 GameObject:
@@ -158,3 +165,37 @@ MonoBehaviour:
   maxHoldDistance: 1.5
   maxFollowVelocity: 20
   collisionRestoreDelay: 0.3
+--- !u!114 &4421732510333991660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521283492607971245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6150d10a5c90892458df3675709e335c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlockAudio
+  pickupClips:
+  - {fileID: 8300000, guid: 544c254ecf09fbf43a9dfd8169c07069, type: 3}
+  - {fileID: 8300000, guid: 5605d4939e135ed409fb527859e400ca, type: 3}
+  dropClips:
+  - {fileID: 8300000, guid: 30641dccf02f51f4f81996db97f86bb9, type: 3}
+  - {fileID: 8300000, guid: a2009e118fb54244487abb043fe6ccaf, type: 3}
+  pickupVolume: 0.7
+  dropVolume: 0.6
+  impactClips:
+  - {fileID: 8300000, guid: 2990c964fe92b484998aac3c967a3fa8, type: 3}
+  - {fileID: 8300000, guid: 2b6eac1ce4485024692b6ddd77cead47, type: 3}
+  - {fileID: 8300000, guid: b3992cfaef42e9046ba55eb3668afcd7, type: 3}
+  minImpactSpeed: 1.5
+  maxImpactSpeed: 15
+  minImpactVolume: 0.2
+  maxImpactVolume: 1
+  impactCooldown: 0.12
+  slideClip: {fileID: 8300000, guid: ab7d3143362c6bb419c318a9796e1030, type: 3}
+  minSlideSpeed: 0.3
+  maxSlideSpeed: 6
+  slideMaxVolume: 0.6
+  slideFadeSpeed: 8
