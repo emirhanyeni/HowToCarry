@@ -35,6 +35,10 @@ public class Pickup : MonoBehaviour
     [SerializeField] private float collisionRestoreDelay = 0.3f;
 
     private bool isHolding;
+    public bool IsHeld => isHolding;
+    public event System.Action PickedUp;
+    public event System.Action Dropped;
+
     private Coroutine restoreRoutine;
     private Rigidbody rb;
     private HoldingMechanic holdingMechanic;
@@ -186,6 +190,8 @@ public class Pickup : MonoBehaviour
 
         if (ignorePlayerCollision)
             SetPlayerCollision(true);
+
+        PickedUp?.Invoke();
     }
 
     private void Drop()
@@ -202,6 +208,7 @@ public class Pickup : MonoBehaviour
         // onları ayırmaya çalışır ve titreme/sekme olur.
         if (ignorePlayerCollision && gameObject.activeInHierarchy)
             restoreRoutine = StartCoroutine(RestorePlayerCollisionRoutine());
+        Dropped?.Invoke();
     }
 
     private void ThrowItem()
