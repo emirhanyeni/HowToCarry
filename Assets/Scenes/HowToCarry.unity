@@ -291951,37 +291951,9 @@ PrefabInstance:
       value: CompanionAgent
       objectReference: {fileID: 0}
     - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: MaxStep
-      value: 2500
-      objectReference: {fileID: 0}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: agentHoldPoint
-      value: 
-      objectReference: {fileID: 1243482669}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 876575636}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: rooms.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: rooms.Array.data[0].roomName
-      value: S0_RuinedLobby_Easy
-      objectReference: {fileID: 0}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: rooms.Array.data[1].roomName
-      value: S1_PitParkour
-      objectReference: {fileID: 0}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: rooms.Array.data[2].roomName
-      value: S2_TwoPaths_Hard
-      objectReference: {fileID: 0}
-    - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: rooms.Array.data[3].roomName
-      value: S3_Lab_GlassCell
-      objectReference: {fileID: 0}
     - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
       propertyPath: rooms.Array.data[0].targetCube
       value: 
@@ -292046,10 +292018,6 @@ PrefabInstance:
       propertyPath: rooms.Array.data[3].agentSpawnPoint
       value: 
       objectReference: {fileID: 912268932}
-    - target: {fileID: 4140731919167759101, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4580649469232543483, guid: b0935faadc07338478d27a0abc29552a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.55
@@ -292092,14 +292060,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4580649469232543483, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 1243482669}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 598694040551236140, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1089771196}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0935faadc07338478d27a0abc29552a, type: 3}
 --- !u!1001 &214218018
 PrefabInstance:
@@ -294380,31 +294342,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086095023}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1089771191 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 598694040551236140, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-  m_PrefabInstance: {fileID: 177387674}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1089771195 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4580649469232543483, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-  m_PrefabInstance: {fileID: 177387674}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1089771196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1089771191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.DecisionRequester
-  DecisionPeriod: 5
-  DecisionStep: 0
-  TakeActionsBetweenDecisions: 1
 --- !u!114 &1091632886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294913,37 +294850,6 @@ Transform:
   m_Children:
   - {fileID: 96667664}
   m_Father: {fileID: 1012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1243482668
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1243482669}
-  m_Layer: 0
-  m_Name: HoldPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1243482669
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1243482668}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 1.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1089771195}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1291164340
 MonoBehaviour:
