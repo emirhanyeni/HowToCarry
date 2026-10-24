@@ -1,3 +1,4 @@
+using HowToCarry.AI;
 using HowToCarry.Core;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ namespace HowToCarry.Player
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
+        [Header("Yoldaş Ajan Bağlantısı")]
+        [SerializeField] private CompanionAgent companionAgent;
         public Camera playerCamera;
         public float walkSpeed = 6f;
         public float runSpeed = 12f;
@@ -71,6 +74,7 @@ namespace HowToCarry.Player
 
         void Update()
         {
+            HandleCompanionCommand();
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -148,13 +152,6 @@ namespace HowToCarry.Player
                     }
                 }
             }
-
-            // C Tuşu: Otonom Ajana "Görevi Başlat" emri ver
-            if (Input.GetKeyDown(KeyCode.C) && _companion != null)
-            {
-                Debug.Log("[Oyuncu] Otonom ajana görev emri verildi!");
-                _companion.ExecuteTaskCommand();
-            }
         }
 
         public void LockCursor(bool isLocked)
@@ -176,6 +173,21 @@ namespace HowToCarry.Player
             animator.SetBool(WalkHash, moving && !running);
             animator.SetBool(RunHash, running);
             animator.SetBool(IdleHash, !moving);
+        }
+        private void HandleCompanionCommand()
+        {
+            // Klavyeden 'C' tuşuna basıldığında ajana görevi başlat/durdur emri ver
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if (companionAgent != null)
+                {
+                    companionAgent.ExecuteTaskCommand();
+                }
+                else
+                {
+                    Debug.LogWarning("[PlayerController] CompanionAgent referansı atanmamış!");
+                }
+            }
         }
     }
 }
