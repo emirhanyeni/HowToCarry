@@ -206,53 +206,46 @@ namespace HowToCarry.AI
                 return;
             }
 
-            // 2. DURUM: Ajan boştaysa (takipteyse) GÖREVİ BAŞLAT
+            // 2. DURUM: Ajan boştaysa (takipteyse) EN DÜŞÜK İNDEKSLİ ÇÖZÜLMEMİŞ ODAYI BUL
+            if (!trainingMode && rooms != null)
+            {
+                int unsolvedRoomIndex = -1;
+
+                for (int i = 0; i < rooms.Length; i++)
+                {
+                    // Eğer odanın plakası var ve henüz BASILMAMIŞSA (isPressed == false)
+                    if (rooms[i] != null && rooms[i].pressurePlate != null && !rooms[i].pressurePlate.isPressed)
+                    {
+                        unsolvedRoomIndex = i;
+                        break; // İlk çözülmemiş odayı bulduğumuzda döngüden çık
+                    }
+                }
+
+                if (unsolvedRoomIndex != -1)
+                {
+                    _currentRoomIndex = unsolvedRoomIndex; // Bulunan odayı güncel görev yap
+                }
+                else
+                {
+                    Debug.Log("[CompanionAgent] Bütün odalar zaten çözülmüş! Yapılacak görev yok.");
+                    return;
+                }
+            }
+
             if (CurrentRoom == null)
             {
                 Debug.LogWarning("[CompanionAgent] Çözülecek aktif oda kalmadı!");
                 return;
             }
 
+            // Görevi Başlat
             _isTaskActive = true;
             _solved = false;
             _cubeWp = 0;
             _plateWp = 0;
             _episodeStartTime = Time.time;
             _prevDist = GoalDistance(CurrentRoom);
-            Debug.Log($"[CompanionAgent] '{CurrentRoom.roomName}' görevi başladı.");
-        }
-
-        // ------------------------------------------------------------------ BÖLÜM BAŞI
-        public override void OnEpisodeBegin()
-        {
-            if (rooms == null || rooms.Length == 0) return;
-
-            // Önceki bölümün sonucunu TensorBoard'a yaz
-            if (_episodesStarted > 0 && trainingMode)
-            {
-                Academy.Instance.StatsRecorder.Add("Puzzle/SuccessRate", _solved ? 1f : 0f);
-                Academy.Instance.StatsRecorder.Add($"Puzzle/Room{_episodeRoom}/SuccessRate", _solved ? 1f : 0f);
-                if (_episodeRoom < _roomEpisodes.Length)
-                {
-                    _roomEpisodes[_episodeRoom]++;
-                    if (_solved) _roomWins[_episodeRoom]++;
-                }
-            }
-            _episodesStarted++;
-
-            if (trainingMode && randomizeRoomInTraining)
-                _currentRoomIndex = UnityEngine.Random.Range(0, rooms.Length);
-
-            _episodeRoom = _currentRoomIndex;
-            _solved = false;
-            _cubeWp = 0;
-            _plateWp = 0;
-            _verticalVelocity = 0f;
-            _episodeStartTime = Time.time;
-            _isTaskActive = trainingMode;
-
-            ResetRoom(CurrentRoom, resetAgent: trainingMode, jitter: trainingMode);
-            _prevDist = GoalDistance(CurrentRoom);
+            Debug.Log($"[CompanionAgent] '{CurrentRoom.roomName}' (İndeks: {_currentRoomIndex}) görevi başladı.");
         }
 
         private void ResetRoom(PuzzleRoomSetup room, bool resetAgent, bool jitter)

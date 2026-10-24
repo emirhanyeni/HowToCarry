@@ -1,5 +1,6 @@
 using HowToCarry.AI;
 using HowToCarry.Core;
+using TMPro;
 using UnityEngine;
 
 namespace HowToCarry.Player
@@ -29,6 +30,9 @@ namespace HowToCarry.Player
         [Header("Interaction & Command (OOP)")]
         [SerializeField] private float interactDistance = 3.5f;
         [SerializeField] private MonoBehaviour companionObject; // Inspector'dan CompanionAgent atanacak
+
+        [Header("UI Etkileşim")]
+        [SerializeField] private TextMeshProUGUI interactionPromptText;
 
         private Vector3 moveDirection = Vector3.zero;
         private float rotationX = 0;
@@ -134,8 +138,27 @@ namespace HowToCarry.Player
 
                 HandleInteractions();
             }
-
+            HandleInteractions(); // Senin yazdığın E'ye basma kontrolü
+            UpdateInteractionDisplay(); // GÖRSEL KONTROL: Ekrana yazı çıkarma
             UpdateAnimator(isRunning);
+        }
+        private void UpdateInteractionDisplay()
+        {
+            if (interactionPromptText == null || playerCamera == null) return;
+
+            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+            Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactDistance, Color.red); // Bu satırı ekle
+            // Eğer baktığımız yerde interactDistance sınırları içinde bir IInteractable varsa
+            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance) && hit.collider.TryGetComponent(out IInteractable interactable))
+            {
+                // Arayüzden (Interface) metni çek ve ekrana yaz
+                interactionPromptText.text = interactable.GetInteractionPrompt();
+            }
+            else
+            {
+                // Boşa bakıyorsak veya obje etkileşime açık değilse yazıyı temizle
+                interactionPromptText.text = string.Empty;
+            }
         }
 
         private void HandleInteractions()

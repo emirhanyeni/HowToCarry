@@ -33,7 +33,7 @@ public class PressurePlate : MonoBehaviour
 
     // Plakanın üzerindeki collider'lar (activator birden fazla collider'a sahip olabilir)
     private readonly HashSet<Collider> blocksOnPlate = new HashSet<Collider>();
-    private bool isPressed;
+    public bool isPressed;
     private Vector3 visualStartPos;
 
     private void Awake()
