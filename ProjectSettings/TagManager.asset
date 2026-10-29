@@ -11,6 +11,8 @@ TagManager:
   - CompanionCube
   - CompanionAgent
   - Waypoint
+  - Guardian
+  - God
   layers:
   - Default
   - TransparentFX

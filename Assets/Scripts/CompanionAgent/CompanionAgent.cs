@@ -44,6 +44,22 @@ namespace HowToCarry.AI
         private const int WallRayCount = 7;
         private static readonly float[] GroundProbeDistances = { 0.5f, 1.2f, 2.0f, 3.0f };
 
+        [Header("Animasyon")]
+        [SerializeField] private Animator animator;
+        private Vector3 _lastPosition;
+        private float _smoothedSpeed = 0f;
+
+        // Animator'daki parametrelerin C# karşılıkları
+        private static readonly int WalkHash = Animator.StringToHash("Walk");
+        private static readonly int RunHash = Animator.StringToHash("Run");
+        private static readonly int IdleHash = Animator.StringToHash("Idle");
+        private static readonly int JumpHash = Animator.StringToHash("Jump");
+        private static readonly int CarryingHash = Animator.StringToHash("Carrying");
+
+        // İleride puzzle küpü taşıdığında veya zıpladığında bunları true yapacağız
+        public bool isCarryingItem = false;
+        public bool isJumping = false;
+
         [Header("Odalar (sağ tık > Auto Fill Rooms From Scene)")]
         [SerializeField] private PuzzleRoomSetup[] rooms;
         [SerializeField] private int startingRoomIndex = 0;
@@ -117,9 +133,14 @@ namespace HowToCarry.AI
             (rooms != null && _currentRoomIndex >= 0 && _currentRoomIndex < rooms.Length) ? rooms[_currentRoomIndex] : null;
 
         // ------------------------------------------------------------------ KURULUM
+        
+
         public override void Initialize()
         {
             _controller = GetComponent<CharacterController>();
+
+            if (animator == null) animator = GetComponentInChildren<Animator>();
+            _lastPosition = transform.position;
 
             if (agentHoldPoint == null)
             {
@@ -159,7 +180,40 @@ namespace HowToCarry.AI
 
             _currentRoomIndex = Mathf.Clamp(startingRoomIndex, 0, Mathf.Max(0, n - 1));
         }
+        private void Update()
+        {
+            // Burada ajanın önceden var olan diğer hareket veya yapay zeka kodları olabilir...
 
+            UpdateAnimations(); // BİZİM EKLEDİĞİMİZ TETİKLEYİCİ SATIR
+        }
+        private void UpdateAnimations()
+        {
+            // Dönüşüm kontrolü (T-Pose engelleme)
+            if (animator == null || !animator.gameObject.activeInHierarchy)
+            {
+                animator = GetComponentInChildren<Animator>();
+            }
+
+            if (animator == null) return;
+
+            // Anlık hızı hesapla
+            float currentSpeed = (transform.position - _lastPosition).magnitude / Time.deltaTime;
+            _lastPosition = transform.position;
+
+            // YENİ: Anlık hızı doğrudan vermek yerine, yumuşatarak geçiş yap (Sarsıntıları emer)
+            _smoothedSpeed = Mathf.Lerp(_smoothedSpeed, currentSpeed, Time.deltaTime * 10f);
+
+            // Yumuşatılmış hızı baz al
+            bool isMoving = _smoothedSpeed > 0.1f;
+            bool isRunning = _smoothedSpeed > 4.5f;
+
+            // Animasyonları tetikle
+            animator.SetBool(WalkHash, isMoving && !isRunning);
+            animator.SetBool(RunHash, isRunning);
+            animator.SetBool(IdleHash, !isMoving);
+            animator.SetBool(JumpHash, isJumping);
+            animator.SetBool(CarryingHash, isCarryingItem);
+        }
         private static float MinY(Transform[] pts, float current)
         {
             if (pts == null) return current;
@@ -414,13 +468,20 @@ namespace HowToCarry.AI
             {
                 _verticalVelocity = jumpPower;
                 AddReward(-jumpPenalty);
+                isJumping = true; // YENİ: Zıpladığında animasyonu tetikle
             }
             else if (!grounded)
             {
                 _verticalVelocity -= gravity * dt;
             }
 
-            float speed = moveInput >= 0f ? moveInput : moveInput * 0.5f; // geri yavaş
+            // YENİ: Yere değdiği an zıplama animasyonunu kapat
+            if (grounded && _verticalVelocity <= 0)
+            {
+                isJumping = false;
+            }
+
+            float speed = moveInput >= 0f ? moveInput : moveInput * 0.5f;
             Vector3 move = transform.forward * (speed * moveSpeed);
             move.y = _verticalVelocity;
             _controller.Move(move * dt);
@@ -448,6 +509,7 @@ namespace HowToCarry.AI
                     cube.AgentPickup(agentHoldPoint, transform, null);
                     AddReward(pickupReward);
                     _prevDist = GoalDistance(room);
+                    isCarryingItem = true; // YENİ: Küpü eline aldığında taşıma animasyonuna geç
                     return;
                 }
             }
@@ -490,7 +552,7 @@ namespace HowToCarry.AI
         {
             var cube = room.targetCube;
             cube.AgentDrop();
-
+            isCarryingItem = false;
             // Plakanın tam merkezine yerleştir (yerçekimi yüzeye oturtur)
             Vector3 target = room.pressurePlate.transform.position + Vector3.up * 0.4f;
             room.cubeRb.linearVelocity = Vector3.zero;

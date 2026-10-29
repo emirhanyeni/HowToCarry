@@ -135,34 +135,38 @@ namespace HowToCarry.Player
                 rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
                 playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
                 transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-
-                HandleInteractions();
             }
             HandleInteractions(); // Senin yazdığın E'ye basma kontrolü
             UpdateInteractionDisplay(); // GÖRSEL KONTROL: Ekrana yazı çıkarma
             UpdateAnimator(isRunning);
         }
-        private void UpdateInteractionDisplay()
-        {
-            if (interactionPromptText == null || playerCamera == null) return;
-
-            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-            Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactDistance, Color.red); // Bu satırı ekle
-            // Eğer baktığımız yerde interactDistance sınırları içinde bir IInteractable varsa
-            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance) && hit.collider.TryGetComponent(out IInteractable interactable))
+            private void UpdateInteractionDisplay()
             {
-                // Arayüzden (Interface) metni çek ve ekrana yaz
-                interactionPromptText.text = interactable.GetInteractionPrompt();
-            }
-            else
+                if (interactionPromptText == null || playerCamera == null) return;
+            // YENİ: Eğer karakter kilitliyse (diyalogdaysa) yazıyı anında sil ve taramayı durdur
+            if (!canMove)
             {
-                // Boşa bakıyorsak veya obje etkileşime açık değilse yazıyı temizle
                 interactionPromptText.text = string.Empty;
+                return;
             }
-        }
+            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+                Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactDistance, Color.red); // Bu satırı ekle
+                // Eğer baktığımız yerde interactDistance sınırları içinde bir IInteractable varsa
+                if (Physics.Raycast(ray, out RaycastHit hit, interactDistance) && hit.collider.TryGetComponent(out IInteractable interactable))
+                {
+                    // Arayüzden (Interface) metni çek ve ekrana yaz
+                    interactionPromptText.text = interactable.GetInteractionPrompt();
+                }
+                else
+                {
+                    // Boşa bakıyorsak veya obje etkileşime açık değilse yazıyı temizle
+                    interactionPromptText.text = string.Empty;
+                }
+            }
 
         private void HandleInteractions()
         {
+            if (!canMove) return;
             // E Tuşu: NPC veya nesnelerle etkileşim (Raycast)
             if (Input.GetKeyDown(KeyCode.E) && playerCamera != null)
             {
@@ -186,6 +190,13 @@ namespace HowToCarry.Player
 
         private void UpdateAnimator(bool isRunning)
         {
+            // YENİ EKLENEN KONTROL: Eğer animatör yoksa VEYA dönüşüm geçirdiğimiz için maymun animatörü kapandıysa, yeni (insan) animatörü bul.
+            if (animator == null || !animator.gameObject.activeInHierarchy)
+            {
+                animator = GetComponentInChildren<Animator>();
+            }
+
+            // animator bulunamadıysa patlamamak için güvenlik çıkışı
             if (animator == null) return;
 
             // Sadece yatay hareketi say (zıplama/yerçekimi hareket sayılmasın)
@@ -200,7 +211,7 @@ namespace HowToCarry.Player
         private void HandleCompanionCommand()
         {
             // Klavyeden 'C' tuşuna basıldığında ajana görevi başlat/durdur emri ver
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.C) && canMove)
             {
                 if (companionAgent != null)
                 {
