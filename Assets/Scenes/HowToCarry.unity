@@ -69246,6 +69246,10 @@ PrefabInstance:
       propertyPath: godRoomDoor
       value: 
       objectReference: {fileID: 96667665}
+    - target: {fileID: 1205126361275858715, guid: 6b40563b908cb154d8a21a8db6fbd424, type: 3}
+      propertyPath: doorOpenSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 9e9717c5943307e488ec8b57d4f6a9ba, type: 3}
     - target: {fileID: 4580649469232543483, guid: 6b40563b908cb154d8a21a8db6fbd424, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.59
@@ -69791,7 +69795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: flashSpeed
-      value: 0.1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: humanModel

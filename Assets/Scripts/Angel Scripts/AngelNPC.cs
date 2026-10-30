@@ -12,6 +12,10 @@ public class AngelNPC : MonoBehaviour, IInteractable
     [Header("Hedef Kapı")]
     [SerializeField] private Door godRoomDoor;
 
+    [Header("Ses Ayarları")]
+    [SerializeField] private AudioClip doorOpenSound;
+    [SerializeField] private AudioSource audioSource;
+
     private int _currentLine = 0;
     private bool _isTalking = false;
     private bool _waitingForChoice = false;
@@ -99,6 +103,20 @@ public class AngelNPC : MonoBehaviour, IInteractable
         if (godRoomDoor != null)
         {
             godRoomDoor.Open();
+
+            // Kapı açıldığında seçilen sesi çal
+            if (doorOpenSound != null)
+            {
+                if (audioSource != null)
+                {
+                    audioSource.PlayOneShot(doorOpenSound);
+                }
+                else
+                {
+                    // AudioSource atanmadıysa sesi doğrudan kapının konumunda oluşturup çalar
+                    AudioSource.PlayClipAtPoint(doorOpenSound, godRoomDoor.transform.position);
+                }
+            }
         }
         Debug.Log("[AngelNPC] Oyuncu Tanrının odasına giriyor...");
     }
