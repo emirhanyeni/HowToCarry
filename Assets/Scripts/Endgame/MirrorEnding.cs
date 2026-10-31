@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using HowToCarry.Core;
 using HowToCarry.Player;
@@ -10,6 +11,10 @@ public class MirrorEnding : MonoBehaviour, IInteractable
     [Tooltip("Tanrı diyalog panelini kopyalayıp buraya atabilirsin")]
     [SerializeField] private GameObject finalDialoguePanel;
     [SerializeField] private TMP_Text finalDialogueText;
+
+    [Header("Sahne")]
+    [Tooltip("Build Settings'teki ana menü sahnesinin adı birebir aynı olmalı.")]
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     private bool isTriggered = false;
 
@@ -53,14 +58,17 @@ public class MirrorEnding : MonoBehaviour, IInteractable
 
         yield return new WaitForSeconds(1.5f);
 
-        finalDialogueText.text += "\n\n<i>[Oyundan çıkmak için SPACE tuşuna bas]</i>";
+        finalDialogueText.text += "\n\n<i>[Ana menüye dönmek için SPACE tuşuna bas]</i>";
 
         while (!Input.GetKeyDown(KeyCode.Space))
         {
             yield return null;
         }
 
-        Debug.Log("Oyun Bitti! (Build alınmış oyunda kapanacaktır)");
-        Application.Quit();
+        // GodNPC'deki statik değişkeni sıfırla, yeni oyunda eski son kalmasın
+        GodNPC.ReachedGoodEnding = false;
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

@@ -16,6 +16,11 @@ public class AngelNPC : MonoBehaviour, IInteractable
     [SerializeField] private AudioClip doorOpenSound;
     [SerializeField] private AudioSource audioSource;
 
+    [Header("Diyalog Geçiş Sesi")]
+    [Tooltip("Her diyalog satırı değiştiğinde (SPACE ile geçişte) çalar.")]
+    [SerializeField] private AudioClip dialogueAdvanceSound;
+    [Range(0f, 1f)] [SerializeField] private float dialogueAdvanceVolume = 0.8f;
+
     private int _currentLine = 0;
     private bool _isTalking = false;
     private bool _waitingForChoice = false;
@@ -76,6 +81,9 @@ public class AngelNPC : MonoBehaviour, IInteractable
     {
         _currentLine++;
 
+        // Diyalog geçiş sesi (satır değişimi ve son soruya geçiş dahil)
+        PlayAdvanceSound();
+
         if (_currentLine < dialogueLines.Length)
         {
             DialogueUI.Instance.UpdateText(dialogueLines[_currentLine]);
@@ -90,6 +98,14 @@ public class AngelNPC : MonoBehaviour, IInteractable
                 "Biraz etrafta dolanacağım", DeclineDestiny
             );
         }
+    }
+
+    private void PlayAdvanceSound()
+    {
+        if (dialogueAdvanceSound == null) return;
+
+        // 2D çalar (spatialBlend = 0): oyuncu nerede olursa olsun aynı seviyede duyar
+        SoundManager.Instance.Play(dialogueAdvanceSound, transform.position, dialogueAdvanceVolume, 0.03f, 0f);
     }
 
     private void AcceptDestiny()

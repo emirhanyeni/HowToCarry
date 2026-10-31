@@ -59940,6 +59940,31 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &342272912 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 598694040551236140, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
+  m_PrefabInstance: {fileID: 5080292877993209142}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &342272913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342272912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4c30ac64abf014390363e06df71b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GodVoice
+  positiveClip: {fileID: 8300000, guid: 0cd29e6684a5a4145a83d5bf8ff1946d, type: 3}
+  negativeClip: {fileID: 8300000, guid: 74da87731156a48448cd466953264724, type: 3}
+  volume: 1
+  screenShake: {fileID: 792935419}
+  shakeOnNegative: 1
+  shakeDuration: 0.6
+  shakeCameraMagnitude: 0.2
+  shakeUIMagnitude: 30
 --- !u!1 &400821609
 GameObject:
   m_ObjectHideFlags: 0
@@ -65752,7 +65777,31 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6140358046531916020, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
       insertIndex: -1
       addedObject: {fileID: 751714737}
+    - targetCorrespondingSourceObject: {fileID: 223460562988644320, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 792935419}
   m_SourcePrefab: {fileID: 100100000, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
+--- !u!1 &792935418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 223460562988644320, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
+  m_PrefabInstance: {fileID: 792935417}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &792935419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792935418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f74eaee39595d794ab3ff37ac267eef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenShake
+  defaultDuration: 0.5
+  defaultCameraMagnitude: 0.15
+  defaultUIMagnitude: 25
+  uiTargets: []
 --- !u!1 &842840489
 GameObject:
   m_ObjectHideFlags: 0
@@ -69250,6 +69299,10 @@ PrefabInstance:
       propertyPath: doorOpenSound
       value: 
       objectReference: {fileID: 8300000, guid: 9e9717c5943307e488ec8b57d4f6a9ba, type: 3}
+    - target: {fileID: 1205126361275858715, guid: 6b40563b908cb154d8a21a8db6fbd424, type: 3}
+      propertyPath: dialogueAdvanceSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0703bcf2d3e2fca46a0473282085eec8, type: 3}
     - target: {fileID: 4580649469232543483, guid: 6b40563b908cb154d8a21a8db6fbd424, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.59
@@ -69794,6 +69847,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
+      propertyPath: godVoice
+      value: 
+      objectReference: {fileID: 342272913}
+    - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: flashSpeed
       value: 0.7
       objectReference: {fileID: 0}
@@ -69863,7 +69920,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2738349659400458735, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2117809541}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 598694040551236140, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 342272913}
   m_SourcePrefab: {fileID: 100100000, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
 --- !u!1001 &5279086796626637228
 PrefabInstance:

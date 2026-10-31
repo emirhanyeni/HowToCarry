@@ -42,6 +42,10 @@ public class GodNPC : MonoBehaviour, IInteractable
     [SerializeField] private TMP_Text persuasionRateText;
     [SerializeField] private TMP_InputField playerInputField;
 
+    [Header("Ses")]
+    [Tooltip("Tanrı'nın olumlu/olumsuz cevap seslerini çalan GodVoice scripti.")]
+    [SerializeField] private GodVoice godVoice;
+
     [Header("Oyun Sonu Animasyonu - Oyuncu")]
     [SerializeField] private Image whiteFlashImage;
     [SerializeField] private GameObject monkeyModel;
@@ -129,6 +133,9 @@ public class GodNPC : MonoBehaviour, IInteractable
         godResponseText.text = response.mesaj;
         _isPersuaded = response.ikna_basarili;
         UpdatePersuasionUI();
+
+        // Her cevapta ikna durumuna göre olumlu/olumsuz ses çal
+        if (godVoice != null) godVoice.PlayReaction(_isPersuaded);
 
         // DEĞİŞİKLİK 1: Tanrı ikna olduysa 5 hakkın dolmasını beklemeden direkt kazan!
         if (_isPersuaded || _messageCount >= MaxMessages)
