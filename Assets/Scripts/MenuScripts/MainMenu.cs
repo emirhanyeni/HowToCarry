@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     [Header("Paneller")]
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject controlsPanel;
 
     private void Start()
     {
@@ -31,13 +32,23 @@ public class MainMenu : MonoBehaviour
     public void OpenSettings()
     {
         if (mainPanel != null) mainPanel.SetActive(false);
+        if (controlsPanel != null) controlsPanel.SetActive(false);
         if (settingsPanel != null) settingsPanel.SetActive(true);
     }
 
-    // Ayarlar panelindeki Geri butonu
+    // Kontroller butonu
+    public void OpenControls()
+    {
+        if (mainPanel != null) mainPanel.SetActive(false);
+        if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (controlsPanel != null) controlsPanel.SetActive(true);
+    }
+
+    // Ayarlar / Kontroller panelindeki Geri butonu
     public void ShowMain()
     {
         if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (controlsPanel != null) controlsPanel.SetActive(false);
         if (mainPanel != null) mainPanel.SetActive(true);
     }
 
