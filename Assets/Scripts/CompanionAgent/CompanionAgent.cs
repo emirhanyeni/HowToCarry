@@ -200,6 +200,10 @@ namespace HowToCarry.AI
 
             if (animator == null) return;
 
+            // Zaman durmuşken (ESC menüsü) deltaTime 0 olur; 0'a bölmek NaN üretir ve
+            // _smoothedSpeed kalıcı olarak bozulur (animasyonlar sonsuza dek Idle'da kalır).
+            if (Time.deltaTime <= 0f) return;
+
             // Anlık hızı hesapla
             float currentSpeed = (transform.position - _lastPosition).magnitude / Time.deltaTime;
             _lastPosition = transform.position;
@@ -260,6 +264,10 @@ namespace HowToCarry.AI
                     CurrentRoom.targetCube.AgentDrop();
                 }
 
+                // Animasyon bayrakları sıfırlanmazsa Büdü "taşıma/zıplama" pozunda takılı kalır
+                isCarryingItem = false;
+                isJumping = false;
+
                 Debug.Log("[CompanionAgent] Görev iptal edildi! Ajan elindekini bıraktı ve takibe dönüyor.");
                 return;
             }
@@ -313,6 +321,10 @@ namespace HowToCarry.AI
         private void ResetRoom(PuzzleRoomSetup room, bool resetAgent, bool jitter)
         {
             if (room == null) return;
+
+            // Küp bırakıldığı için taşıma/zıplama animasyonu da kapanmalı
+            isCarryingItem = false;
+            isJumping = false;
 
             if (room.targetCube != null && room.targetCube.IsHeld)
                 room.targetCube.AgentDrop();
@@ -623,6 +635,9 @@ namespace HowToCarry.AI
             if (grounded && _verticalVelocity < 0f) _verticalVelocity = -groundedStickForce;
             else if (!grounded) _verticalVelocity -= gravity * dt;
 
+            // Görev zıplarken iptal edilirse Jump animasyonu açık kalmasın
+            if (grounded) isJumping = false;
+
             float moveAmount = 0f;
             if (!trainingMode && playerTransform != null)
             {
@@ -638,6 +653,7 @@ namespace HowToCarry.AI
                     transform.position = playerTransform.position - (playerTransform.forward * 1.5f) + (Vector3.up * 1f);
                     transform.rotation = playerTransform.rotation;
                     _controller.enabled = true;
+                    _lastPosition = transform.position; // ışınlanma "çok hızlı koşuyor" sayılmasın
                     return; // Işınlanma karesinde yürümeyi iptal et
                 }
                 // 2. DURUM: Ajan normal takip mesafesindeyse yürüyerek gel
