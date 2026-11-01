@@ -66370,7 +66370,7 @@ PrefabInstance:
     - target: {fileID: 4818027304644816064, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
       propertyPath: companionObject
       value: 
-      objectReference: {fileID: 1793160174}
+      objectReference: {fileID: 0}
     - target: {fileID: 4818027304644816064, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
       propertyPath: interactionPromptText
       value: 
@@ -68037,11 +68037,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 427002936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1376438751 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8166151887590130588, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-  m_PrefabInstance: {fileID: 1537990671}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1407626557
 GameObject:
   m_ObjectHideFlags: 0
@@ -68518,7 +68513,7 @@ PrefabInstance:
     - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
       propertyPath: animator
       value: 
-      objectReference: {fileID: 1774994590}
+      objectReference: {fileID: 0}
     - target: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
       propertyPath: playerTransform
       value: 
@@ -69398,7 +69393,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "b\xFCd\xFCye bilmece \xE7\xF6zd\xFCrmek i\xE7in \"c\" t\u015Funa bas"
+  m_text: "b\xFCd\xFCye bilmece \xE7\xF6zd\xFCrmek i\xE7in \"c\" tu\u015Funa bas"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e4395daec7afc7d47871169ba61a4300, type: 2}
   m_sharedMaterial: {fileID: 1155995499976136246, guid: e4395daec7afc7d47871169ba61a4300, type: 2}
@@ -69464,7 +69459,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -221.0504, y: 0, z: -547.1476, w: 0}
+  m_margin: {x: -221.0504, y: 0, z: -653.20056, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -70167,11 +70162,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8166151887590130588, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
   m_PrefabInstance: {fileID: 792935417}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1774994590 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7739773204664662971, guid: ce8fafbed27bbbe4b95d426f63fd0b76, type: 3}
-  m_PrefabInstance: {fileID: 792935417}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1793160173 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 964077351133120780, guid: b0935faadc07338478d27a0abc29552a, type: 3}
@@ -70183,25 +70173,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50a7a7558093dd4ab53f4626f014f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HowToCarry.AI.CompanionAgent
---- !u!114 &1793160174 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5630423777597949034, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-  m_PrefabInstance: {fileID: 1537990671}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Policies.BehaviorParameters
 --- !u!4 &1793160175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4580649469232543483, guid: b0935faadc07338478d27a0abc29552a, type: 3}
-  m_PrefabInstance: {fileID: 1537990671}
-  m_PrefabAsset: {fileID: 0}
---- !u!143 &1793160176 stripped
-CharacterController:
-  m_CorrespondingSourceObject: {fileID: 4140731919167759101, guid: b0935faadc07338478d27a0abc29552a, type: 3}
   m_PrefabInstance: {fileID: 1537990671}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1824257947
@@ -71688,15 +71662,15 @@ PrefabInstance:
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: companionController
       value: 
-      objectReference: {fileID: 1793160176}
+      objectReference: {fileID: 0}
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: companionHumanModel
       value: 
-      objectReference: {fileID: 2072413299}
+      objectReference: {fileID: 0}
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: companionMonkeyModel
       value: 
-      objectReference: {fileID: 1376438751}
+      objectReference: {fileID: 0}
     - target: {fileID: 5572998476752784133, guid: cf27a34de919bed478c2c6065acfa4cb, type: 3}
       propertyPath: playerFinalSpawnPoint
       value: 
