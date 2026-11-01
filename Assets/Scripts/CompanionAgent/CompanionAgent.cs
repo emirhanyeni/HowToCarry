@@ -64,6 +64,10 @@ namespace HowToCarry.AI
         [SerializeField] private PuzzleRoomSetup[] rooms;
         [SerializeField] private int startingRoomIndex = 0;
 
+        [Header("Konuşma Yazısı (C'ye basınca)")]
+        [Tooltip("Boş bırakılırsa sahnede otomatik aranır.")]
+        [SerializeField] private CompanionSpeech speech;
+
         [Header("Oyuncu Takibi (sadece oyun modunda)")]
         [SerializeField] private Transform playerTransform;
         [SerializeField] private float followStopDistance = 2.5f;
@@ -300,6 +304,10 @@ namespace HowToCarry.AI
             _episodeStartTime = Time.time;
             _prevDist = GoalDistance(CurrentRoom);
             Debug.Log($"[CompanionAgent] '{CurrentRoom.roomName}' (İndeks: {_currentRoomIndex}) görevi başladı.");
+
+            // Görev gerçekten başladığında "Hemen Çözüyorum Abi" yazısını göster
+            if (speech == null) speech = FindAnyObjectByType<CompanionSpeech>(FindObjectsInactive.Include);
+            if (speech != null) speech.Say();
         }
 
         private void ResetRoom(PuzzleRoomSetup room, bool resetAgent, bool jitter)

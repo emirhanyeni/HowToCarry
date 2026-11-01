@@ -73,6 +73,9 @@ public class Pickup : MonoBehaviour
 
     private void Update()
     {
+        // Oyun duraklatılmışken (ESC menüsü) E / sağ tık ile nesne alınıp fırlatılmasın
+        if (Time.timeScale <= 0f) return;
+
         // Ajan tutuyorsa oyuncu klavye girdisiyle müdahale etmesin
         if (isHeldByAgent || holdingMechanic == null) return;
 
