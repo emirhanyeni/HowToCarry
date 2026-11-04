@@ -112,3 +112,20 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# =========================
+# ML-AGENTS VE PYTHON EKLERİ
+# =========================
+# ML-Agents Eğitim Çıktıları ve Modelleri
+results/
+
+# Python Önbellek Dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python Sanal Ortamları (Eğer proje dizinindeyse)
+venv/
+.venv/
+env/
+.env/
