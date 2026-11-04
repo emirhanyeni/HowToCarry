@@ -3,53 +3,55 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Pickup : MonoBehaviour
 {
-    // Aynı anda sadece tek bir nesne tutulabilsin
+    // Oyuncu için aynı anda sadece tek bir nesne tutulabilsin
     private static Pickup currentHeld;
 
     [Header("Alma / Fırlatma")]
-    [SerializeField] private float pickupRange = 3f;        // Alma menzili
-    [SerializeField] private float throwForce = 12f;        // Impulse olarak uygulanır (kütleye bölünür)
+    [SerializeField] private float pickupRange = 3f;
+    [SerializeField] private float throwForce = 12f;
 
     [Header("Tutma Konumu (Inspector'dan ayarla)")]
-    [Tooltip("HoldingMechanic'a göre yerel konum. Z = ileri, Y = yukarı, X = sağ. Blok karaktere çarpıyorsa Z değerini artır.")]
+    [Tooltip("HoldingMechanic'a göre yerel konum. Z = ileri, Y = yukarı, X = sağ.")]
     [SerializeField] private Vector3 holdOffset = new Vector3(0f, 0f, 1.5f);
-    [Tooltip("Açıkken nesnenin boyutu kadar ek mesafe otomatik eklenir (büyük bloklar karaktere girmesin).")]
     [SerializeField] private bool addObjectSizeToDistance = true;
-    [Tooltip("Ek güvenlik mesafesi (otomatik boyuta eklenir).")]
     [SerializeField] private float extraClearance = 0.1f;
 
     [Header("Karakterle Çarpışma")]
-    [Tooltip("Tutarken karakterin collider'ları ile çarpışmayı kapatır (titremeyi önler).")]
     [SerializeField] private bool ignorePlayerCollision = true;
-    [Tooltip("Boş bırakılırsa HoldingMechanic'ın en üst parent'ı (karakter) otomatik kullanılır.")]
     [SerializeField] private Transform playerRoot;
 
     [Header("Takip")]
-    [SerializeField] private float followSpeed = 15f;       // Tutma noktasına gitme hızı
-    [SerializeField] private float maxHoldDistance = 1.5f;  // Tutma noktasından bu kadar uzaklaşırsa bırak (duvara takılma vb.)
-    [Tooltip("Takip sırasında nesnenin ulaşabileceği en yüksek hız (ani sıçramaları önler).")]
+    [SerializeField] private float followSpeed = 15f;
+    [SerializeField] private float maxHoldDistance = 1.5f;
     [SerializeField] private float maxFollowVelocity = 20f;
 
     [Header("Bırakma / Atma")]
-    [Tooltip("Bıraktıktan sonra karakterle çarpışma en az bu kadar saniye kapalı kalır (atış titremesini önler).")]
     [SerializeField] private float collisionRestoreDelay = 0.3f;
 
     private bool isHolding;
+    public bool IsHeld => isHolding;
+    public event System.Action PickedUp;
+    public event System.Action Dropped;
+
     private Coroutine restoreRoutine;
     private Rigidbody rb;
     private HoldingMechanic holdingMechanic;
     private Camera mainCam;
     private Collider[] myColliders;
     private Collider[] playerColliders;
-
-    // --- ANİMASYON (eklenen) ---
     private Animator playerAnimator;
+
+    // --- OTONOM AJAN (AI) TAŞIMA REFERANSLARI ---
+    private bool isHeldByAgent;
+    private Transform activeHoldTransform;
+    private Collider[] activeCarrierColliders;
+    private Animator activeCarrierAnimator;
+
     private static readonly int CarryHash = Animator.StringToHash("Carry");
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        // Hareket akıcı görünsün diye her zaman açık (tutarken, atarken ve düşerken)
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         myColliders = GetComponentsInChildren<Collider>();
     }
@@ -59,26 +61,23 @@ public class Pickup : MonoBehaviour
         holdingMechanic = HoldingMechanic.Instance;
         mainCam = Camera.main;
 
-        if (holdingMechanic == null)
+        if (holdingMechanic != null)
         {
-            Debug.LogError("Sahnede HoldingMechanic bulunamadı! Pickup çalışmayacak.", this);
-            return;
+            if (playerRoot == null)
+                playerRoot = holdingMechanic.transform.root;
+
+            playerColliders = playerRoot.GetComponentsInChildren<Collider>();
+            playerAnimator = playerRoot.GetComponentInChildren<Animator>();
         }
-
-        if (playerRoot == null)
-            playerRoot = holdingMechanic.transform.root;
-
-        playerColliders = playerRoot.GetComponentsInChildren<Collider>();
-
-        // --- ANİMASYON (eklenen) ---
-        playerAnimator = playerRoot.GetComponentInChildren<Animator>();
-        if (playerAnimator == null)
-            Debug.LogWarning("Karakterde Animator bulunamadı, Carry animasyonu çalışmayacak.", this);
     }
 
     private void Update()
     {
-        if (holdingMechanic == null) return;
+        // Oyun duraklatılmışken (ESC menüsü) E / sağ tık ile nesne alınıp fırlatılmasın
+        if (Time.timeScale <= 0f) return;
+
+        // Ajan tutuyorsa oyuncu klavye girdisiyle müdahale etmesin
+        if (isHeldByAgent || holdingMechanic == null) return;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -88,38 +87,39 @@ public class Pickup : MonoBehaviour
                 PickupItem();
         }
 
-        // Sağ tık ile fırlat
         if (isHolding && Input.GetMouseButtonDown(1))
             ThrowItem();
     }
 
-    // Fizik işlemleri FixedUpdate'te yapılmalı
     private void FixedUpdate()
     {
-        if (!isHolding) return;
+        if (!isHolding || activeHoldTransform == null) return;
 
         Vector3 toTarget = GetHoldPosition() - rb.position;
 
-        // Nesne bir yere takılıp tutma noktasından çok uzakta kalırsa bırak
-        if (toTarget.magnitude > maxHoldDistance)
+        // Oyuncu tutarken çok uzaklaşırsa bırak (Ajan eğitimde takılmasın diye ajanda daha esnek)
+        if (!isHeldByAgent && toTarget.magnitude > maxHoldDistance)
         {
             Drop();
             return;
         }
 
-        // Parent yapmadan, yumuşak şekilde tutma noktasına çek
         rb.linearVelocity = Vector3.ClampMagnitude(toTarget * followSpeed, maxFollowVelocity);
         rb.angularVelocity = Vector3.zero;
     }
 
-    // Nesnenin tutulacağı dünya konumu
     private Vector3 GetHoldPosition()
     {
-        Vector3 offset = holdOffset;
+        // Ajan tutuyorsa doğrudan ajanın HoldPoint noktasını + boyutu kullan
+        if (isHeldByAgent && activeHoldTransform != null)
+        {
+            Vector3 agentOffset = new Vector3(0f, 0f, addObjectSizeToDistance ? GetObjectRadius() + extraClearance : 0f);
+            return activeHoldTransform.TransformPoint(agentOffset);
+        }
 
+        Vector3 offset = holdOffset;
         if (addObjectSizeToDistance)
         {
-            // Nesnenin ileri yöndeki yarım boyutu + güvenlik payı kadar öteye koy
             offset.z += GetObjectRadius() + extraClearance;
         }
 
@@ -135,11 +135,9 @@ public class Pickup : MonoBehaviour
             if (first) { b = c.bounds; first = false; }
             else b.Encapsulate(c.bounds);
         }
-        // Bounds extents en büyük yarım boyut; küp için güvenli bir değer
         return Mathf.Max(b.extents.x, b.extents.z);
     }
 
-    // Oyuncu bu nesneye bakıyor mu ve menzilde mi?
     private bool IsLookedAt()
     {
         if (mainCam == null) mainCam = Camera.main;
@@ -153,13 +151,13 @@ public class Pickup : MonoBehaviour
         return false;
     }
 
-    private void SetPlayerCollision(bool ignore)
+    private void SetCarrierCollision(Collider[] carrierCols, bool ignore)
     {
-        if (playerColliders == null) return;
+        if (carrierCols == null) return;
 
         foreach (Collider mine in myColliders)
         {
-            foreach (Collider other in playerColliders)
+            foreach (Collider other in carrierCols)
             {
                 if (mine != null && other != null)
                     Physics.IgnoreCollision(mine, other, ignore);
@@ -167,17 +165,20 @@ public class Pickup : MonoBehaviour
         }
     }
 
+    // --- OYUNCU ALMA / BIRAKMA ---
     private void PickupItem()
     {
         isHolding = true;
+        isHeldByAgent = false;
         currentHeld = this;
 
+        activeHoldTransform = holdingMechanic.transform;
+        activeCarrierColliders = playerColliders;
+        activeCarrierAnimator = playerAnimator;
+
         rb.useGravity = false;
+        if (activeCarrierAnimator != null) activeCarrierAnimator.SetBool(CarryHash, true);
 
-        // --- ANİMASYON (eklenen) ---
-        if (playerAnimator != null) playerAnimator.SetBool(CarryHash, true);
-
-        // Önceki bırakmadan kalan bekleyen "çarpışmayı aç" işlemi varsa iptal et
         if (restoreRoutine != null)
         {
             StopCoroutine(restoreRoutine);
@@ -185,55 +186,98 @@ public class Pickup : MonoBehaviour
         }
 
         if (ignorePlayerCollision)
-            SetPlayerCollision(true);
+            SetCarrierCollision(activeCarrierColliders, true);
+
+        PickedUp?.Invoke();
     }
 
-    private void Drop()
+    public void Drop()
     {
+        if (!isHolding) return;
+
         isHolding = false;
+        isHeldByAgent = false;
         if (currentHeld == this) currentHeld = null;
 
         rb.useGravity = true;
+        if (activeCarrierAnimator != null) activeCarrierAnimator.SetBool(CarryHash, false);
 
-        // --- ANİMASYON (eklenen) ---
-        if (playerAnimator != null) playerAnimator.SetBool(CarryHash, false);
+        if (ignorePlayerCollision && gameObject.activeInHierarchy && activeCarrierColliders != null)
+            restoreRoutine = StartCoroutine(RestoreCollisionRoutine(activeCarrierColliders));
 
-        // Çarpışmayı hemen açma: nesne hâlâ karakterin içindeyse fizik motoru
-        // onları ayırmaya çalışır ve titreme/sekme olur.
-        if (ignorePlayerCollision && gameObject.activeInHierarchy)
-            restoreRoutine = StartCoroutine(RestorePlayerCollisionRoutine());
+        PickedUpOrDroppedCleanup();
+        Dropped?.Invoke();
+    }
+
+    // --- OTONOM AJAN (ML-AGENTS) ALMA / BIRAKMA METOTLARI ---
+    public void AgentPickup(Transform agentHoldPoint, Transform agentRoot, Animator agentAnim)
+    {
+        if (isHolding) Drop();
+
+        isHolding = true;
+        isHeldByAgent = true;
+        activeHoldTransform = agentHoldPoint;
+        activeCarrierColliders = agentRoot.GetComponentsInChildren<Collider>();
+        activeCarrierAnimator = agentAnim;
+
+        rb.useGravity = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        if (activeCarrierAnimator != null) activeCarrierAnimator.SetBool(CarryHash, true);
+
+        if (restoreRoutine != null)
+        {
+            StopCoroutine(restoreRoutine);
+            restoreRoutine = null;
+        }
+
+        if (ignorePlayerCollision)
+            SetCarrierCollision(activeCarrierColliders, true);
+
+        PickedUp?.Invoke();
+    }
+
+    public void AgentDrop()
+    {
+        if (!isHolding) return;
+        Drop();
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
+
+    private void PickedUpOrDroppedCleanup()
+    {
+        activeHoldTransform = null;
+        activeCarrierAnimator = null;
     }
 
     private void ThrowItem()
     {
         Drop();
-
-        // Tutarken verilen takip hızı atışın üstüne eklenmesin
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-
         rb.AddForce(holdingMechanic.transform.forward * throwForce, ForceMode.Impulse);
     }
 
-    private System.Collections.IEnumerator RestorePlayerCollisionRoutine()
+    private System.Collections.IEnumerator RestoreCollisionRoutine(Collider[] colsToRestore)
     {
         yield return new WaitForSeconds(collisionRestoreDelay);
 
-        // Nesne hâlâ karakterin collider'larıyla iç içeyse bekle
-        while (OverlapsPlayer())
+        while (OverlapsCarrier(colsToRestore))
             yield return new WaitForFixedUpdate();
 
-        SetPlayerCollision(false);
+        SetCarrierCollision(colsToRestore, false);
         restoreRoutine = null;
     }
 
-    private bool OverlapsPlayer()
+    private bool OverlapsCarrier(Collider[] carrierCols)
     {
-        if (playerColliders == null) return false;
+        if (carrierCols == null) return false;
 
         foreach (Collider mine in myColliders)
         {
-            foreach (Collider other in playerColliders)
+            foreach (Collider other in carrierCols)
             {
                 if (mine != null && other != null && mine.bounds.Intersects(other.bounds))
                     return true;
@@ -242,31 +286,17 @@ public class Pickup : MonoBehaviour
         return false;
     }
 
-    // Nesne devre dışı kalır / yok olursa static referans takılı kalmasın
     private void OnDisable()
     {
-        if (ignorePlayerCollision)
-            SetPlayerCollision(false);
+        if (ignorePlayerCollision && activeCarrierColliders != null)
+            SetCarrierCollision(activeCarrierColliders, false);
 
-        // --- ANİMASYON (eklenen) ---
-        if (isHolding && playerAnimator != null)
-            playerAnimator.SetBool(CarryHash, false);
+        if (isHolding && activeCarrierAnimator != null)
+            activeCarrierAnimator.SetBool(CarryHash, false);
 
         restoreRoutine = null;
         if (currentHeld == this) currentHeld = null;
         isHolding = false;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, pickupRange);
-
-        // Tutma noktasını Scene görünümünde göster (oyun çalışırken)
-        if (holdingMechanic != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(GetHoldPosition(), 0.1f);
-        }
+        isHeldByAgent = false;
     }
 }

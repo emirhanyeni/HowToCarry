@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Pad
   - Block
+  - Wall
+  - PressurePlate
+  - CompanionCube
+  - CompanionAgent
+  - Waypoint
+  - Guardian
+  - God
   layers:
   - Default
   - TransparentFX

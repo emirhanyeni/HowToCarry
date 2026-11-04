@@ -7,6 +7,7 @@ using UnityEngine.Events;
 /// durması kapıyı açar (yok eder), obje kalkınca kapıyı geri getirir.
 /// Plakadaki Collider "Is Trigger" işaretli olmalı.
 /// </summary>
+namespace HowToCarry.Mechanics { 
 [RequireComponent(typeof(Collider))]
 public class PressurePlate : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class PressurePlate : MonoBehaviour
 
     // Plakanın üzerindeki collider'lar (activator birden fazla collider'a sahip olabilir)
     private readonly HashSet<Collider> blocksOnPlate = new HashSet<Collider>();
-    private bool isPressed;
+    public bool isPressed;
     private Vector3 visualStartPos;
 
     private void Awake()
@@ -92,4 +93,5 @@ public class PressurePlate : MonoBehaviour
             onReleased?.Invoke();
         }
     }
+}
 }

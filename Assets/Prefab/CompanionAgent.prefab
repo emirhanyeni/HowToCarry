@@ -1,143 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &223460562988644320
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1040465060526535856}
-  - component: {fileID: 8185273952069240495}
-  - component: {fileID: 3705965241667440425}
-  - component: {fileID: 6713476907934566297}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1040465060526535856
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223460562988644320}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.008, y: 0.842, z: 0.083}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3979780767794240116}
-  m_Father: {fileID: 4580649469232543483}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &8185273952069240495
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223460562988644320}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!81 &3705965241667440425
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223460562988644320}
-  m_Enabled: 1
---- !u!114 &6713476907934566297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223460562988644320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_AllowXRRendering: 1
-  m_AllowHDROutput: 1
-  m_UseScreenCoordOverride: 0
-  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_TaaSettings:
-    m_Quality: 3
-    m_FrameInfluence: 0.1
-    m_JitterScale: 1
-    m_MipBias: 0
-    m_VarianceClampScale: 0.9
-    m_ContrastAdaptiveSharpening: 0
-  m_Version: 2
 --- !u!1 &598694040551236140
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4580649469232543483}
   - component: {fileID: 4140731919167759101}
-  - component: {fileID: 4818027304644816064}
+  - component: {fileID: 5630423777597949034}
+  - component: {fileID: 964077351133120780}
+  - component: {fileID: 82881604813384610}
+  - component: {fileID: 6070629473894122930}
+  - component: {fileID: 8704936774195072160}
   m_Layer: 0
   m_Name: CompanionAgent
   m_TagString: CompanionAgent
@@ -166,11 +32,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.36079, y: -5.8, z: -33.48}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 4188649564664864190}
   - {fileID: 8797833878535559462}
-  - {fileID: 1040465060526535856}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &4140731919167759101
@@ -191,14 +57,14 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1.8
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4818027304644816064
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0.07, z: 0}
+--- !u!114 &5630423777597949034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -207,24 +73,257 @@ MonoBehaviour:
   m_GameObject: {fileID: 598694040551236140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c94685dcdaed546acc1d7f2a320327, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  playerCamera: {fileID: 8185273952069240495}
-  walkSpeed: 6
-  runSpeed: 12
-  jumpPower: 7
-  gravity: 10
-  lookSpeed: 2
-  lookXLimit: 45
-  defaultHeight: 2
-  crouchHeight: 1
-  crouchSpeed: 3
-  animator: {fileID: 7739773204664662971}
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Policies.BehaviorParameters
+  m_BrainParameters:
+    VectorObservationSize: 22
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 2
+      BranchSizes: 02000000
+    VectorActionSize: 
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 5022602860645237092, guid: 9279dcdabb01dfb4f81193abd77b36b8, type: 3}
+  m_InferenceDevice: 0
+  m_BehaviorType: 2
+  m_BehaviorName: CompanionBehavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_DeterministicInference: 0
+  m_ObservableAttributeHandling: 0
+--- !u!114 &964077351133120780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50a7a7558093dd4ab53f4626f014f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HowToCarry.AI.CompanionAgent
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 4000
+  rooms:
+  - roomName: Room0
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    waypointsToCube:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    waypointsToPlate:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    cubeRb: {fileID: 0}
+    agentStartPos: {x: 0, y: 0, z: 0}
+    agentStartRot: {x: 0, y: 0, z: 0, w: 0}
+    cubeStartPos: {x: 0, y: 0, z: 0}
+    cubeStartRot: {x: 0, y: 0, z: 0, w: 0}
+    killY: 0
+  - roomName: Room1
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    waypointsToCube:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    waypointsToPlate:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    cubeRb: {fileID: 0}
+    agentStartPos: {x: 0, y: 0, z: 0}
+    agentStartRot: {x: 0, y: 0, z: 0, w: 0}
+    cubeStartPos: {x: 0, y: 0, z: 0}
+    cubeStartRot: {x: 0, y: 0, z: 0, w: 0}
+    killY: 0
+  - roomName: Room2
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    waypointsToCube:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    waypointsToPlate:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    cubeRb: {fileID: 0}
+    agentStartPos: {x: 0, y: 0, z: 0}
+    agentStartRot: {x: 0, y: 0, z: 0, w: 0}
+    cubeStartPos: {x: 0, y: 0, z: 0}
+    cubeStartRot: {x: 0, y: 0, z: 0, w: 0}
+    killY: 0
+  - roomName: Room3
+    targetCube: {fileID: 0}
+    pressurePlate: {fileID: 0}
+    agentSpawnPoint: {fileID: 0}
+    cubeSpawnPoint: {fileID: 0}
+    waypointsToCube:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    waypointsToPlate:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    cubeRb: {fileID: 0}
+    agentStartPos: {x: 0, y: 0, z: 0}
+    agentStartRot: {x: 0, y: 0, z: 0, w: 0}
+    cubeStartPos: {x: 0, y: 0, z: 0}
+    cubeStartRot: {x: 0, y: 0, z: 0, w: 0}
+    killY: 0
+  startingRoomIndex: 0
+  playerTransform: {fileID: 0}
+  followStopDistance: 2.75
+  teleportDistance: 15
+  agentHoldPoint: {fileID: 4188649564664864190}
+  moveSpeed: 5
+  turnSpeed: 180
+  jumpPower: 6.5
+  gravity: 12
   groundedStickForce: 2
-  interactDistance: 3.5
-  companionObject: {fileID: 0}
---- !u!1 &7190234596815417874
+  pickupDistance: 2.2
+  pickupHeightTolerance: 1.5
+  waypointRadius: 1.8
+  plateDropRadius: 0.5
+  plateDropHeight: 2.5
+  maxCarryDistance: 3.5
+  progressScale: 0.1
+  pickupReward: 1
+  waypointReward: 0.3
+  successReward: 3
+  fallPenalty: 1
+  timeoutPenalty: 0.5
+  jumpPenalty: 0.001
+  fallMargin: 5
+  sensorHeight: 0.5
+  wallRayLength: 8
+  groundProbeLength: 6
+  trainingMode: 0
+  randomizeRoomInTraining: 0
+  spawnYawJitter: 25
+--- !u!114 &82881604813384610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.DecisionRequester
+  DecisionPeriod: 5
+  DecisionStep: 0
+  TakeActionsBetweenDecisions: 1
+--- !u!114 &6070629473894122930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Sensors.RayPerceptionSensorComponent3D
+  m_SensorName: UpperRaySensor
+  m_DetectableTags:
+  - PressurePlate
+  - Wall
+  m_RaysPerDirection: 4
+  m_MaxRayDegrees: 75
+  m_SphereCastRadius: 0.5
+  m_RayLength: 12
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  m_AlternatingRayOrder: 1
+  m_UseBatchedRaycasts: 0
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0.6
+  m_EndVerticalOffset: 0.6
+--- !u!114 &8704936774195072160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598694040551236140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ML-Agents::Unity.MLAgents.Sensors.RayPerceptionSensorComponent3D
+  m_SensorName: GroundRaySensor
+  m_DetectableTags:
+  - Wall
+  - PressurePlate
+  m_RaysPerDirection: 3
+  m_MaxRayDegrees: 60
+  m_SphereCastRadius: 0.5
+  m_RayLength: 8
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  m_AlternatingRayOrder: 1
+  m_UseBatchedRaycasts: 0
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0.5
+  m_EndVerticalOffset: -0.4
+--- !u!1 &3970441210799702074
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,42 +331,29 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3979780767794240116}
-  - component: {fileID: 7053050742389255876}
+  - component: {fileID: 4188649564664864190}
   m_Layer: 0
-  m_Name: HoldingMechanic
+  m_Name: HoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3979780767794240116
+--- !u!4 &4188649564664864190
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7190234596815417874}
+  m_GameObject: {fileID: 3970441210799702074}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.36, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1040465060526535856}
+  m_Father: {fileID: 4580649469232543483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7053050742389255876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7190234596815417874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25cd7ba9890541c409d06f5daf5c07f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TempParent
 --- !u!1001 &9048459741990174413
 PrefabInstance:
   m_ObjectHideFlags: 0
