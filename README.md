@@ -264,10 +264,29 @@ Eğitim komutu:
 ```bash
 mlagents-learn companion_agent_config.yaml --run-id=companion_01
 ```
+**16 Arenalı Eğitim Sahnesi**
 
+![Eğitim](docs/media/16arena.gif)
+
+[▶ Tam eğitim videosu (YouTube)](https://youtube.com/...)
+
+**Eğitimin Ortasından Odaların Görüntüleri:**
+
+![1. Oda](docs/media/room0_1.gif)
+
+![2. Oda](docs/media/room1_1.gif)
+
+![3. Oda](docs/media/room2_1.gif)
+![](docs/media/room2_2.gif)
+
+![4. Oda](docs/media/room3_1.gif)
 #### 2.7.5 Eğitim Sonuçları (TensorBoard)
 
 Eğitim `companion_01` çalıştırma adıyla **3.000.000 adım** sürdü.
+
+**1.8 Milyonuncu Adım Anında TensorBoard Grafikleri**
+
+![TensorBoard](docs/media/tensorboard_step1800k.gif)
 
 **Kümülatif ödül:**
 
