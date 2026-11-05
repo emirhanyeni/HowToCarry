@@ -47,15 +47,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AngelNPC
   dialogueLines:
-  - "Ho\u015F geldiniz, evrimle\u015Fmemi\u015F yarat\u0131klar."
+  - "Ho\u015F geldiniz, tersine evrimle\u015Fmi\u015F  maymunlar."
   - "\u0130\xE7eride deneyimleyece\u011Finiz \u015Fey, bug\xFCne kadar kimse i\xE7in
     m\xFCmk\xFCn olmad\u0131."
   - "Haz\u0131rlanm\u0131\u015F olsan\u0131z iyi olur, \xE7\xFCnk\xFC bir kere i\xE7eri
     girdikten sonra t\xFCm evrenin kaderini belirleyeceksiniz."
   - "Haz\u0131rlanm\u0131\u015F olsan\u0131z iyi olur, \xE7\xFCnk\xFC bir kere i\xE7eri
     girdikten sonra t\xFCm evrenin kaderini belirleyeceksiniz."
-  - "O'nu insanl\u0131\u011F\u0131 geri getirmesi i\xE7in ikna etmeniz gerek."
+  - "O'nu insanl\u0131\u011F\u0131 geri getirmesi i\xE7in ikna etmeniz gerek. Haz\u0131r
+    m\u0131s\u0131n\u0131z?"
   godRoomDoor: {fileID: 0}
+  doorOpenSound: {fileID: 8300000, guid: 9e9717c5943307e488ec8b57d4f6a9ba, type: 3}
+  audioSource: {fileID: 0}
+  dialogueAdvanceSound: {fileID: 8300000, guid: 0703bcf2d3e2fca46a0473282085eec8, type: 3}
+  dialogueAdvanceVolume: 0.8
 --- !u!136 &8963185707489832973
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -109,7 +114,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7913946640852770699}
   m_Father: {fileID: 4580649469232543483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5717592323892048658
@@ -127,7 +133,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6234329430965179382}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -169,3 +175,77 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &7663233169278220384
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2738349659400458735}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.27
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.17364807
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.9848078
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+      propertyPath: m_Name
+      value: Melek_Parcali
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+--- !u!4 &7913946640852770699 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d4bc62a5fd90c34bbc2cc0a0df31238, type: 3}
+  m_PrefabInstance: {fileID: 7663233169278220384}
+  m_PrefabAsset: {fileID: 0}
