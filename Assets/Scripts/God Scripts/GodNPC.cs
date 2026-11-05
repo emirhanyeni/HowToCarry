@@ -70,9 +70,9 @@ public class GodNPC : MonoBehaviour, IInteractable
     private const int MaxMessages = 5;
 
     private readonly string systemPrompt =
-           "Sen dünyayı yok etmek üzere olan, kibirli ama edebi ve bilge bir Yunan Tanrısısın. " +
+           "Sen; dünyaya verdikleri zarar nedeniyle tüm insanlığı maymuna çeviren, kibirli ama edebi ve bilge bir Yunan Tanrısısın." +
            "İnsanların doğayı katletmesini iğrenç bulduğun için onları maymuna dönüştürdün. " +
-           "Şu an karşında senden merhamet dileyen ve insanlığı geri getirmeni isteyen bir mutant maymun var. " +
+           "Şu an karşında senden merhamet dileyen ve insanlığı geri getirmeni isteyen, eskiden insan olan bir maymun var. " +
            "KURALLAR:\n" +
            "1. ASLA ROLDEN ÇIKMA. Karşındakinin bir maymun olduğunu hep hatırlat. KESİNLİKLE ÇOK KISA VE ÖZ YANIT VER (Maksimum 2 cümle kullan).\n" +
            "2. Yanıtlarını KESİNLİKLE SADECE aşağıdaki JSON formatında ver, JSON dışına hiçbir ekstra metin yazma.\n" +
@@ -108,7 +108,7 @@ public class GodNPC : MonoBehaviour, IInteractable
     {
         _isInteracting = true;
         godDialoguePanel.SetActive(true);
-        godResponseText.text = "Tanrı huzuruna çıktın. Onu ikna etmek için 5 şansın var. Konuş...";
+        godResponseText.text = "O'nun huzuruna çıktın. İkna olması için 5 şansın var. Konuş...";
         playerInputField.text = "";
 
         _messageCount = 0;
@@ -128,7 +128,7 @@ public class GodNPC : MonoBehaviour, IInteractable
 
         playerInputField.text = "";
         playerInputField.interactable = false;
-        godResponseText.text = "Tanrı düşünüyor...";
+        godResponseText.text = "Hmm...[Yanıt bekleniyor]";
 
         GodResponse response = await AskOllama(userMessage);
 
@@ -191,7 +191,7 @@ public class GodNPC : MonoBehaviour, IInteractable
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError($"[Ollama] Hata: {webRequest.error}");
-                return new GodResponse { mesaj = "God stopped talking to you, maybe it's because of you, shame.", ikna_basarili = _isPersuaded };
+                return new GodResponse { mesaj = "Konuşmaya değmezsin. [Sunucu Erişim Hatası]", ikna_basarili = _isPersuaded };
             }
 
             try
@@ -204,7 +204,7 @@ public class GodNPC : MonoBehaviour, IInteractable
             catch (Exception e)
             {
                 Debug.LogError($"[Ollama] JSON Ayrıştırma Hatası: {e.Message}");
-                return new GodResponse { mesaj = "Sözlerin anlamsız bir gürültüden ibaret. Daha net konuş maymun.", ikna_basarili = _isPersuaded };
+                return new GodResponse { mesaj = "Biliyor musun, belki de sussan daha hayırlı olur. [JSON Ayrıştırma Hatası]", ikna_basarili = _isPersuaded };
             }
         }
 
@@ -239,14 +239,14 @@ public class GodNPC : MonoBehaviour, IInteractable
         if (_isPersuaded)
         {
             ReachedGoodEnding = true;
-            godResponseText.text = godResponseText.text + "\n\n<color=#00FF00>TANRI: \"Sözlerinde bir parça umut var maymun... İnsanlık bir şansı daha hak ediyor.\"\n\n<b>[Devam etmek için BOŞLUK (SPACE) tuşuna bas]</b></color>";
+            godResponseText.text = godResponseText.text + "\n\n<color=#00FF00>\"Sözlerinde bir parça umut var maymun... İnsanlık bir şansı daha hak ediyor.\"\n\n<b>[Devam etmek için BOŞLUK (SPACE) tuşuna bas]</b></color>";
             StartCoroutine(EndingSequence(true));
         }
         else
         {
             ReachedGoodEnding = false;
             // YENİ: Kötü son için de SPACE bekleme eklendi
-            godResponseText.text = godResponseText.text + "\n\n<color=#FF0000>TANRI: \"Beni hayal kırıklığına uğrattın. Sonsuza dek kürklerinizin içinde çürüyün.\"\n\n<b>[Devam etmek için BOŞLUK (SPACE) tuşuna bas]</b></color>";
+            godResponseText.text = godResponseText.text + "\n\n<color=#FF0000>\"Beni hayal kırıklığına uğrattın. Sonsuza dek kürklerinizin içinde çürüyün.\"\n\n<b>[Devam etmek için BOŞLUK (SPACE) tuşuna bas]</b></color>";
             StartCoroutine(EndingSequence(false));
         }
     }
@@ -303,7 +303,7 @@ public class GodNPC : MonoBehaviour, IInteractable
         if (mirrorCameraObj != null) mirrorCameraObj.SetActive(true);
 
         yield return new WaitForSeconds(1f); // Odada uyanmadan önce 1 saniye bekle
-
+        godDialoguePanel.SetActive(false);
         while (alpha > 0f)
 
         {
@@ -314,7 +314,7 @@ public class GodNPC : MonoBehaviour, IInteractable
         }
 
         if (_player != null) _player.LockCursor(true);
-        godDialoguePanel.SetActive(false);
+        
     }
 }
 
