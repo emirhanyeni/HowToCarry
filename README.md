@@ -280,13 +280,15 @@ mlagents-learn companion_agent_config.yaml --run-id=companion_01
 ![](docs/media/training/room2_2.gif)
 
 ![4. Oda](docs/media/room3_1.gif)
-#### 2.7.5 Eğitim Sonuçları (TensorBoard)
-
-Eğitim `companion_01` çalıştırma adıyla **3.000.000 adım** sürdü.
 
 **1.8 Milyonuncu Adım Anında TensorBoard Grafikleri**
 
 ![TensorBoard](docs/media/training/tensorboard_step1800k.gif)
+
+#### 2.7.5 Eğitim Sonuçları (TensorBoard)
+
+Eğitim `companion_01` çalıştırma adıyla **3.000.000 adım** sürdü.
+
 
 **Kümülatif ödül:**
 
