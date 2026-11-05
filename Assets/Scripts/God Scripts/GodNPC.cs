@@ -16,6 +16,7 @@ public class GodResponse
     public bool ikna_basarili;
 }
 
+
 [Serializable]
 public class OllamaOptions
 {
@@ -98,6 +99,8 @@ public class GodNPC : MonoBehaviour, IInteractable
         if (!_isInteracting)
         {
             OpenDialogue();
+
+
         }
     }
 
@@ -156,6 +159,7 @@ public class GodNPC : MonoBehaviour, IInteractable
             "'ikna_basarili' değerini true yap. Aksi halde false olarak bırak. Sadece tam olarak ikna olursan true yap!";
 
         OllamaRequest requestData = new OllamaRequest
+
         {
             model = modelName,
             prompt = userPrompt,
@@ -203,6 +207,9 @@ public class GodNPC : MonoBehaviour, IInteractable
                 return new GodResponse { mesaj = "Sözlerin anlamsız bir gürültüden ibaret. Daha net konuş maymun.", ikna_basarili = _isPersuaded };
             }
         }
+
+
+
     }
 
     private void UpdatePersuasionUI()
@@ -294,10 +301,11 @@ public class GodNPC : MonoBehaviour, IInteractable
         }
         // -------------------------------------------------------------------------------
         if (mirrorCameraObj != null) mirrorCameraObj.SetActive(true);
-        
+
         yield return new WaitForSeconds(1f); // Odada uyanmadan önce 1 saniye bekle
 
         while (alpha > 0f)
+
         {
             alpha -= Time.deltaTime * flashSpeed;
             targetColor.a = alpha;
