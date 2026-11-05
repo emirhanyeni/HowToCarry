@@ -182,6 +182,123 @@ flowchart TD
 
 ---
 
+### 2.7 ML-Agents Eğitim Süreci (Pekiştirmeli Öğrenme)
+
+Büdü'nün hareket kararları (ileri/geri, dönüş, zıplama), sabit bir animasyon veya komut dizisi değil, **PPO algoritmasıyla eğitilmiş bir sinir ağı** tarafından üretilir. Eğitilen model `CompanionBehavior.onnx` olarak dışa aktarılmış ve oyunda `CompanionAgent` üzerindeki Behavior Parameters bileşenine atanmıştır. Oyun içinde aynı model çalışır, eğitim sırasındaki ödül ve ceza mantığı çalışmaz.
+
+#### 2.7.1 Eğitim Ortamı
+
+| Özellik | Değer |
+|---|---|
+| **Algoritma** | PPO (Proximal Policy Optimization), `mlagents-learn` ile |
+| **Behavior Name** | `CompanionBehavior` |
+| **Paralel eğitim** | 4 farklı puzzle odası × 4 kopya = **16 arena**, 16 `CompanionAgent` aynı anda eğitildi |
+| **Gözlem uzayı** | 22 float (bkz. bölüm 2.2) |
+| **Aksiyon uzayı** | 2 sürekli (ileri/geri hareket, dönüş) + 1 ayrık dal (zıpla / zıplama) |
+| **Başlangıç noktası** | Oyun doğrusal ilerlediği için her odanın **giriş kapısı** spawn noktası olarak kullanıldı |
+| **Rastgelelik** | Her bölümde başlangıç yönüne `±25°` rastgele sapma (`spawnYawJitter`) ve eğitimde rastgele oda seçimi (`randomizeRoomInTraining`) |
+
+Eğitim 16 arenada paralel yürütüldü. Böylece aynı sürede 16 kat daha fazla deneyim toplandı, ajan dört farklı oda düzenine aynı anda maruz kaldı ve tek bir odaya ezberlenmesi engellendi.
+
+#### 2.7.2 Waypoint Destekli Müfredat
+
+Ajan başlangıçta ödül sinyaliyle küpe ve plakaya kendi başına ulaşamadığı için (seyrek ödül problemi) eğitim **ara noktalarla (waypoint)** desteklendi:
+
+1. **Aşama 1, küpe giden yol (`waypointsToCube`):** Ajan sırayla ara noktalardan geçerek küpe yönlendirilir.
+2. **Aşama 2, plakaya giden yol (`waypointsToPlate`):** Küp alındıktan sonra hedef, plakaya giden ara noktalara geçer.
+
+Güncel hedef (küp, ara nokta veya plaka) ajanın gözlemine yerel yön ve normalize mesafe olarak girer. Ara noktalar ajana **hareket etmeyi söylemez**. Yalnızca "şimdi nereye bakmalısın" bilgisini ve her noktada ödül verir. Rampa, boşluk ve zıplama gibi **motor kararlarını** (ne zaman dönülecek, ne zaman zıplanacak, düşmemek için ne kadar hızlanılacak) ağ kendisi öğrenir. Hareket çıktısı yalnızca ağdan gelir.
+
+#### 2.7.3 Ödül Fonksiyonu
+
+```mermaid
+flowchart TD
+    A[Her karar adımı] --> B["Zaman cezası: toplam -0.5 / MaxStep"]
+    B --> C{Zıpladı mı?}
+    C -->|Evet| D["-0.001 zıplama cezası"]
+    C -->|Hayır| E
+    D --> E["Hedefe yaklaşma: clamp((önceki - şimdiki mesafe) × 0.1, -0.05, +0.05)"]
+    E --> F{Ara noktaya ulaştı mı? <= 1.8m}
+    F -->|Evet| G["+0.3 waypoint ödülü, sıradaki hedef"]
+    F -->|Hayır| H
+    G --> H{Küpü aldı mı? <= 2.0m}
+    H -->|Evet| I["+1.0 pickup ödülü, hedef: plaka"]
+    H -->|Hayır| J
+    I --> J{Küp plakanın üstünde mi? <= 0.5m}
+    J -->|Evet| K["+3.0 başarı ödülü, EndEpisode"]
+    J -->|Hayır| L{Ajan veya küp y < killY?}
+    L -->|Evet| M["-1.0 düşme cezası, EndEpisode"]
+    L -->|Hayır| A
+```
+
+| Ödül / Ceza | Değer | Amaç |
+|---|---|---|
+| Başarı (küp plakaya bırakıldı) | `+3.0` | Asıl görevi tamamlamak |
+| Küpü alma | `+1.0` | Görevin ilk yarısını pekiştirmek |
+| Waypoint geçme | `+0.3` (her nokta) | Seyrek ödülü sıklaştırmak, doğru rotada tutmak |
+| Hedefe yaklaşma | `±0.05` (adım başına, sınırlı) | Sürekli yön sinyali. Potansiyel tabanlı olduğu için ileri-geri giderek sömürülemez |
+| Düşme (ajan veya küp `killY` altına indi) | `-1.0` + bölüm sonu | Boşluğa düşmeyi ve küpü düşürmeyi caydırmak |
+| Zaman cezası | toplam `-0.5` (`MaxStep` boyunca) | Çözümü hızlandırmak |
+| Zıplama | `-0.001` | Gereksiz zıplamayı azaltmak |
+
+**Bölüm bitiş koşulları:** görev başarıyla tamamlanması, düşme veya `MaxStep` zaman aşımı.
+
+#### 2.7.4 Hiperparametreler
+
+Eğitimde `companion_agent_config.yaml` dosyası kullanıldı:
+
+| Parametre | Değer | | Parametre | Değer |
+|---|---|---|---|---|
+| `trainer_type` | `ppo` | | `hidden_units` | `256` |
+| `batch_size` | `1024` | | `num_layers` | `2` |
+| `buffer_size` | `10240` | | `normalize` | `true` |
+| `learning_rate` | `0.0003` (linear schedule) | | `gamma` (extrinsic) | `0.99` |
+| `beta` (entropi) | `0.005` | | `time_horizon` | `128` |
+| `epsilon` | `0.2` | | `max_steps` | `3.000.000` |
+| `lambd` | `0.95` | | `num_epoch` | `3` |
+
+Merak (curiosity) ödülü yapılandırmada **kapalıdır**. Waypoint ve yaklaşma ödülleri ajanı kübe ulaştırmaya yetti.
+
+Eğitim komutu:
+
+```bash
+mlagents-learn companion_agent_config.yaml --run-id=companion_01
+```
+
+#### 2.7.5 Eğitim Sonuçları (TensorBoard)
+
+Eğitim `companion_01` çalıştırma adıyla **3.000.000 adım** sürdü.
+
+**Kümülatif ödül:**
+
+![Cumulative Reward](docs/images/reward.png)
+
+**Bölüm uzunluğu:**
+
+![Episode Length](docs/images/episode_length.png)
+
+**Puzzle başarı oranı:**
+
+![Success Rate](docs/images/success_rate.png)
+
+| Metrik | Başlangıç | Eğitim sonu (3M adım) |
+|---|---|---|
+| Ortalama kümülatif ödül | negatif / sıfıra yakın | **≈ 13.37** |
+| Ortalama bölüm uzunluğu | ≈ 500 (üst sınır, görev çözülemiyor) | **≈ 140** |
+| Puzzle başarı oranı | 0 (≈ 250k adıma kadar) | **≈ 1.0** |
+
+**Gözlemler:**
+- İlk ~250k adımda ajan hedefe ulaşamadı. Başarı oranı 0, bölüm uzunluğu üst sınırdaydı.
+- ~250k–700k arasında ajan küpe ve plakaya ulaşmayı öğrendi, başarı oranı hızla yaklaşık %75–80'e çıktı.
+- ~700k–1.5M arası belirgin bir plato var. Ajan büyük ihtimalle zor odalardaki boşluk ve zıplama geçişlerinde zorlandı.
+- ~1.5M adımdan sonra ikinci bir sıçrama oldu ve başarı oranı 1.0'a yaklaştı. Aynı anda bölüm süresi 140 adıma kadar düştü. Bu, ajanın görevi yalnızca çözmediğini, aynı zamanda daha **kısa yoldan** çözdüğünü gösterir.
+
+#### 2.7.6 Sınırlılıklar
+
+- Oyun doğrusal olduğu için her odanın **giriş kapısı sabit spawn noktası** olarak kullanıldı ve eğitime NavMesh dahil edilmedi. Ajan yalnızca eğitimde gördüğü başlangıç koşullarına yakın durumlarda güvenilir çalışır.
+- Başlangıç yönü rastgeleliği (`±25°`) ve fizik tabanlı küp hareketi nedeniyle oyun sırasında nadiren görev başarısız olabilir. Bu durumda `FallRecovery` veya tekrar `C` emri devreye girer.
+- Başarı oranı eğitim ortamında ölçülmüştür. Oyun içi tekrar testleri bölüm 5.1'deki yöntemle yapılır.
+
 ## 3. LLM Entegrasyon Mimarisi
 
 ### 3.1 Model Seçimi
@@ -210,9 +327,9 @@ Oyunda oyuncuyu karşılayan iki NPC bulunur; Melek seçim tabanlı diyalog sist
 Tanrı sistem promptu (`GodNPC.cs`):
 
 ```text
-Sen dünyayı yok etmek üzere olan, kibirli ama edebi ve bilge bir Yunan Tanrısısın.
+Sen; dünyaya verdikleri zarar nedeniyle tüm insanlığı maymuna çeviren, kibirli ama edebi ve bilge bir Yunan Tanrısısın.
 İnsanların doğayı katletmesini iğrenç bulduğun için onları maymuna dönüştürdün.
-Şu an karşında senden merhamet dileyen ve insanlığı geri getirmeni isteyen bir mutant maymun var.
+Şu an karşında senden merhamet dileyen ve insanlığı geri getirmeni isteyen, eskiden insan olan bir maymun var.
 KURALLAR:
 1. ASLA ROLDEN ÇIKMA. Karşındakinin bir maymun olduğunu hep hatırlat. KESİNLİKLE ÇOK KISA VE ÖZ YANIT VER (Maksimum 2 cümle kullan).
 2. Yanıtlarını KESİNLİKLE SADECE aşağıdaki JSON formatında ver, JSON dışına hiçbir ekstra metin yazma.
@@ -291,7 +408,7 @@ sequenceDiagram
 
 ### 3.5 Asenkron Yapı
 
-LLM istekleri `async / await` mimarisi ve `UnityWebRequest` kullanılarak ana oyun thread'ini bloklamadan (`while (!operation.isDone) await Task.Yield();`) çalıştırılır. Yanıt beklenirken metin kutusu geçici olarak kilitlenir (`playerInputField.interactable = false`), oyun ve animasyonlar akıcı çalışmaya devam eder ve arayüzde `"Tanrı düşünüyor..."` göstergesi görünür.
+LLM istekleri `async / await` mimarisi ve `UnityWebRequest` kullanılarak ana oyun thread'ini bloklamadan (`while (!operation.isDone) await Task.Yield();`) çalıştırılır. Yanıt beklenirken metin kutusu geçici olarak kilitlenir (`playerInputField.interactable = false`), oyun ve animasyonlar akıcı çalışmaya devam eder ve arayüzde `"Hmm...[Yanıt bekleniyor]"` göstergesi görünür.
 
 ---
 
@@ -299,9 +416,9 @@ LLM istekleri `async / await` mimarisi ve `UnityWebRequest` kullanılarak ana oy
 
 | Durum | Tespit | Oyunun Tepkisi |
 |---|---|---|
-| Ollama sunucusu kapalı / Bağlantı hatası | `webRequest.result != UnityWebRequest.Result.Success` | Konsola hata loglanır, ekranda `"God stopped talking to you, maybe it's because of you, shame."` mesajı gösterilir, oyun çalışmaya devam eder |
+| Ollama sunucusu kapalı / Bağlantı hatası | `webRequest.result != UnityWebRequest.Result.Success` | Konsola hata loglanır, ekranda `Konuşmaya değmezsin. [Sunucu Erişim Hatası]` mesajı gösterilir, oyun çalışmaya devam eder |
 | Model yüklü değil | HTTP 404 / WebRequest hatası | Güvenli hata yanıtı döndürülür, oyun çökmez |
-| Geçersiz / bozuk JSON | `try-catch (Exception)` ile `JsonUtility` parse hatası | `"Sözlerin anlamsız bir gürültüden ibaret. Daha net konuş maymun."` fallback mesajı gösterilir, mevcut `_isPersuaded` durumu korunur |
+| Geçersiz / bozuk JSON | `try-catch (Exception)` ile `JsonUtility` parse hatası | `"Biliyor musun, belki de sussan daha hayırlı olur. [JSON Ayrıştırma Hatası]"` fallback mesajı gösterilir, mevcut `_isPersuaded` durumu korunur |
 | Boş mesaj gönderimi | `string.IsNullOrEmpty(userMessage)` | İstek gönderilmez ve oyuncunun mesaj hakkı harcanmaz |
 | Sahne değişimi / ESC menüsü | `Time.timeScale` ve statik durum sıfırlama | `OnDestroy`, `ExitGame` ve `MirrorEnding` içinde `Time.timeScale = 1f` ve `GodNPC.ReachedGoodEnding = false` yapılarak donma ve durum sızıntısı önlenir |
 
